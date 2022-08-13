@@ -49,7 +49,7 @@ internal object ImageUtils {
    */
   private val FAIL_ON_MISSING_THUMBNAIL = true
 
-  private const val THUMBNAIL_SIZE = 1000
+  const val THUMBNAIL_SIZE = 1000
 
   @Throws(IOException::class)
   fun requireSimilar(
@@ -373,9 +373,9 @@ internal object ImageUtils {
     }
   }
 
-  fun getThumbnailScale(image: BufferedImage): Double {
+  fun getThumbnailScale(image: BufferedImage, limit: Int = THUMBNAIL_SIZE): Double {
     val maxDimension = max(image.width, image.height)
-    return THUMBNAIL_SIZE / maxDimension.toDouble()
+    return limit / maxDimension.toDouble()
   }
 
   private fun setRenderingHints(g2: Graphics2D) {
