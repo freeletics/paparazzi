@@ -99,7 +99,8 @@ public class Paparazzi @JvmOverloads constructor(
   private val renderExtensions: Set<RenderExtension> = setOf(),
   private val supportsRtl: Boolean = false,
   private val showSystemUi: Boolean = false,
-  private val validateAccessibility: Boolean = false
+  private val validateAccessibility: Boolean = false,
+  private val imageSize: ImageSize = ImageSize.Limit()
 ) : TestRule {
   private val logger = PaparazziLogger()
   private lateinit var renderSession: RenderSessionImpl
@@ -423,9 +424,14 @@ public class Paparazzi @JvmOverloads constructor(
   }
 
   private fun scaleImage(image: BufferedImage): BufferedImage {
-    val scale = ImageUtils.getThumbnailScale(image)
-    // Only scale images down so we don't waste storage space enlarging smaller layouts.
-    return if (scale < 1f) ImageUtils.scale(image, scale, scale) else image
+    return when (imageSize) {
+      ImageSize.FullBleed -> image
+      is ImageSize.Limit -> {
+        val scale = ImageUtils.getThumbnailScale(image)
+        // Only scale images down so we don't waste storage space enlarging smaller layouts.
+        return if (scale < 1f) ImageUtils.scale(image, scale, scale) else image
+      }
+    }
   }
 
   private fun validateLayoutAccessibility(view: View, image: BufferedImage? = null) {
