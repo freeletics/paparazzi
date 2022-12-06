@@ -57,7 +57,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: {{ github.repository == 'cashapp/paparazzi' && github.ref == 'refs/heads/master' }}
     needs:
       - build
 

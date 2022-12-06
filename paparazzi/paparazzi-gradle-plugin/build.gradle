@@ -6,7 +6,7 @@ apply plugin: 'com.github.gmazzo.buildconfig'
 gradlePlugin {
   plugins {
     paparazzi {
-      id = 'app.cash.paparazzi'
+      id = 'com.freeletics.fork.paparazzi'
       implementationClass = 'app.cash.paparazzi.gradle.PaparazziPlugin'
     }
   }

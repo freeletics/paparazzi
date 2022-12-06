@@ -249,7 +249,7 @@ class PaparazziPlugin : Plugin<Project> {
 
   private fun Project.addTestDependency() {
     configurations.getByName("testImplementation").dependencies.add(
-      dependencies.create("app.cash.paparazzi:paparazzi:$VERSION")
+      dependencies.create("com.freeletics.fork.paparazzi:paparazzi:$VERSION")
     )
   }
 
