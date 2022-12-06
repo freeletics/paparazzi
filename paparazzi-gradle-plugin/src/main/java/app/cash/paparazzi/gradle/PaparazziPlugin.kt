@@ -278,7 +278,7 @@ public class PaparazziPlugin @Inject constructor(
     val dependency = if (isInternal()) {
       dependencies.project(mapOf("path" to ":paparazzi"))
     } else {
-      dependencies.create("app.cash.paparazzi:paparazzi:$VERSION")
+      dependencies.create("com.freeletics.fork.paparazzi:paparazzi:$VERSION")
     }
     configurations.getByName("testImplementation").dependencies.add(dependency)
   }
