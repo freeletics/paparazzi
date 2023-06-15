@@ -1,4 +1,4 @@
-apply plugin: 'com.vanniktech.maven.publish'
+// apply plugin: 'com.vanniktech.maven.publish'
 
 tasks.register('winJar', Jar) {
   from(repoDir) {
@@ -11,16 +11,16 @@ tasks.register('winJar', Jar) {
   dependsOn(':libs:layoutlib:cloneLayoutlib')
 }
 
-mavenPublishing {
-  coordinates(property("GROUP"), property("POM_ARTIFACT_ID"), libs.versions.layoutlib.get())
-}
+// mavenPublishing {
+//   coordinates(property("GROUP"), property("POM_ARTIFACT_ID"), libs.versions.layoutlib.get())
+// }
 
-publishing {
-  publications {
-    mavenNativeLibrary(MavenPublication) {
-      artifact winJar
-      artifact emptySourcesJar
-      artifact emptyJavadocJar
-    }
-  }
-}
+// publishing {
+//   publications {
+//     mavenNativeLibrary(MavenPublication) {
+//       artifact winJar
+//       artifact emptySourcesJar
+//       artifact emptyJavadocJar
+//     }
+//   }
+// }
