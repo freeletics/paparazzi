@@ -1,13 +1,6 @@
 name: build
 
-on:
-  pull_request: {}
-
-  push:
-    branches:
-      - '**'
-    tags-ignore:
-      - '**'
+on: workflow_dispatch
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
