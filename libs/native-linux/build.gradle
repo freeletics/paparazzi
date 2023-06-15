@@ -1,4 +1,4 @@
-apply plugin: 'com.vanniktech.maven.publish'
+// apply plugin: 'com.vanniktech.maven.publish'
 
 version = libs.versions.layoutlib.get()
 
@@ -13,12 +13,12 @@ tasks.register('linuxJar', Jar) {
   dependsOn(':libs:layoutlib:cloneLayoutlib')
 }
 
-publishing {
-  publications {
-    mavenNativeLibrary(MavenPublication) {
-      artifact linuxJar
-      artifact emptySourcesJar
-      artifact emptyJavadocJar
-    }
-  }
-}
+// publishing {
+//   publications {
+//     mavenNativeLibrary(MavenPublication) {
+//       artifact linuxJar
+//       artifact emptySourcesJar
+//       artifact emptyJavadocJar
+//     }
+//   }
+// }
