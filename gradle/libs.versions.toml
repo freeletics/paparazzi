@@ -45,11 +45,11 @@ ktlint = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "kt
 
 kxml2 = { module = "kxml2:kxml2", version = "2.3.0" }
 
-layoutlib-native-jdk11 = { module = "app.cash.paparazzi:layoutlib-native-jdk11", version.ref = "layoutlib" }
-layoutlib-native-linux = { module = "app.cash.paparazzi:layoutlib-native-linux", version.ref = "layoutlib" }
-layoutlib-native-macArm = { module = "app.cash.paparazzi:layoutlib-native-macarm", version.ref = "layoutlib" }
-layoutlib-native-macOsX = { module = "app.cash.paparazzi:layoutlib-native-macosx", version.ref = "layoutlib" }
-layoutlib-native-windows = { module = "app.cash.paparazzi:layoutlib-native-win", version.ref = "layoutlib" }
+layoutlib-native-jdk11 = { module = "com.freeletics.fork.paparazzi:layoutlib-native-jdk11", version.ref = "layoutlib" }
+layoutlib-native-linux = { module = "com.freeletics.fork.paparazzi:layoutlib-native-linux", version.ref = "layoutlib" }
+layoutlib-native-macArm = { module = "com.freeletics.fork.paparazzi:layoutlib-native-macarm", version.ref = "layoutlib" }
+layoutlib-native-macOsX = { module = "com.freeletics.fork.paparazzi:layoutlib-native-macosx", version.ref = "layoutlib" }
+layoutlib-native-windows = { module = "com.freeletics.fork.paparazzi:layoutlib-native-win", version.ref = "layoutlib" }
 
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 moshi-core = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
