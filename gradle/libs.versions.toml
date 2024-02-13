@@ -13,8 +13,8 @@ moshi = "1.15.1"
 minSdk = "25"
 compileSdk = "34"
 
-# Maps to this commit: https://android.googlesource.com/platform/prebuilts/studio/layoutlib/+/a73a761
-layoutlib = "2023.2.1-beta02-6c7316c"
+# Maps to this commit: https://android.googlesource.com/platform/prebuilts/studio/layoutlib/+/6c7316c
+layoutlib = "2023.2.1-rc1-6c7316c"
 layoutlibPrebuiltSha = "6c7316c"
 
 [libraries]
