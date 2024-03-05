@@ -54,8 +54,8 @@ internal object ImageUtils {
   /** Directory where to write the thumbnails and deltas. */
   private val failureDir: File
     get() {
-      val buildDirString = System.getProperty("paparazzi.build.dir")
-      val failureDir = File(buildDirString, "paparazzi/failures")
+      val failureDirString = System.getProperty("paparazzi.failure.dir")
+      val failureDir = File(failureDirString)
       failureDir.mkdirs()
       return failureDir
     }

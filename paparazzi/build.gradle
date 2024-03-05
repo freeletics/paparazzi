@@ -131,6 +131,10 @@ tasks.withType(Test).configureEach {
     project.layout.buildDirectory.get().toString()
   )
   systemProperty(
+    "paparazzi.failure.dir",
+    project.layout.buildDirectory.dir("failures").get().toString()
+  )
+  systemProperty(
     "paparazzi.report.dir",
     project.extensions.getByType(ReportingExtension).baseDirectory.dir("paparazzi").get().toString()
   )
