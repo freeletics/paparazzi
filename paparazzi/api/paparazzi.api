@@ -1,3 +1,12 @@
+public final class app/cash/paparazzi/DefaultSnapshotWriter : app/cash/paparazzi/SnapshotHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/io/File;)V
+	public synthetic fun <init> (Ljava/io/File;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun close ()V
+	public fun newFrameHandler (Lapp/cash/paparazzi/Snapshot;II)Lapp/cash/paparazzi/SnapshotHandler$FrameHandler;
+}
+
 public final class app/cash/paparazzi/DeviceConfig {
 	public static final field $stable I
 	public static final field Companion Lapp/cash/paparazzi/DeviceConfig$Companion;
@@ -213,6 +222,15 @@ public final class app/cash/paparazzi/SnapshotVerifier : app/cash/paparazzi/Snap
 	public fun <init> (D)V
 	public fun <init> (DLjava/io/File;)V
 	public synthetic fun <init> (DLjava/io/File;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun close ()V
+	public fun newFrameHandler (Lapp/cash/paparazzi/Snapshot;II)Lapp/cash/paparazzi/SnapshotHandler$FrameHandler;
+}
+
+public final class app/cash/paparazzi/SnapshotWriter : app/cash/paparazzi/SnapshotHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/io/File;)V
+	public synthetic fun <init> (Ljava/io/File;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun close ()V
 	public fun newFrameHandler (Lapp/cash/paparazzi/Snapshot;II)Lapp/cash/paparazzi/SnapshotHandler$FrameHandler;
 }
