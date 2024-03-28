@@ -11,6 +11,7 @@ import okio.buffer
 import okio.source
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.testkit.runner.TaskOutcome.FROM_CACHE
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.After
@@ -518,42 +519,6 @@ class PaparazziPluginTest {
   }
 
   @Test
-  fun rerunOnReportDeletion() {
-    val fixtureRoot = File("src/test/projects/rerun-report")
-    val reportDir = File(fixtureRoot, "build/reports/paparazzi/debug").registerForDeletionOnExit()
-    val reportHtml = File(reportDir, "index.html")
-    assertThat(reportHtml.exists()).isFalse()
-
-    File(fixtureRoot, "src/test/snapshots").registerForDeletionOnExit()
-
-    // Take 1
-    val firstRunResult = gradleRunner
-      .withArguments("recordPaparazziDebug", "--stacktrace")
-      .forwardOutput()
-      .runFixture(fixtureRoot) { build() }
-
-    with(firstRunResult.task(":testDebugUnitTest")) {
-      assertThat(this).isNotNull()
-      assertThat(this!!.outcome).isEqualTo(SUCCESS)
-    }
-    assertThat(reportHtml.exists()).isTrue()
-
-    // Remove report
-    reportDir.deleteRecursively()
-
-    // Take 2
-    val secondRunResult = gradleRunner
-      .withArguments("recordPaparazziDebug", "--stacktrace")
-      .runFixture(fixtureRoot) { build() }
-
-    with(secondRunResult.task(":testDebugUnitTest")) {
-      assertThat(this).isNotNull()
-      assertThat(this!!.outcome).isEqualTo(SUCCESS) // not UP-TO-DATE
-    }
-    assertThat(reportHtml.exists()).isTrue()
-  }
-
-  @Test
   fun rerunOnSnapshotDeletion() {
     val fixtureRoot = File("src/test/projects/rerun-snapshots")
 
@@ -581,10 +546,54 @@ class PaparazziPluginTest {
       .withArguments("recordPaparazziDebug", "--stacktrace")
       .runFixture(fixtureRoot) { build() }
 
+    // test task does not run again
+    with(secondRunResult.task(":testDebugUnitTest")) {
+      assertThat(this).isNotNull()
+      assertThat(this!!.outcome).isEqualTo(TaskOutcome.UP_TO_DATE)
+    }
+    // copy runs again
+    with(secondRunResult.task(":recordPaparazziDebug")) {
+      assertThat(this).isNotNull()
+      assertThat(this!!.outcome).isEqualTo(SUCCESS)
+    }
+
+    assertThat(snapshot.exists()).isTrue()
+  }
+
+  @Test
+  fun rerunOnExistingSnapshotDeletion() {
+    val fixtureRoot = File("src/test/projects/rerun-snapshots-existing")
+
+    val snapshotsDir = File(fixtureRoot, "src/test/snapshots")
+    val snapshot = File(snapshotsDir, "images/app.cash.paparazzi.plugin.test_RecordTest_record.png")
+    assertThat(snapshot.exists()).isTrue()
+
+    // Take 1
+    val firstRunResult = gradleRunner
+      .withArguments("recordPaparazziDebug", "--stacktrace")
+      .forwardOutput()
+      .runFixture(fixtureRoot) { build() }
+
+    with(firstRunResult.task(":testDebugUnitTest")) {
+      assertThat(this).isNotNull()
+      assertThat(this!!.outcome).isEqualTo(SUCCESS)
+    }
+    assertThat(snapshot.exists()).isTrue()
+
+    // Remove snapshot
+    snapshotsDir.deleteRecursively()
+
+    // Take 2
+    val secondRunResult = gradleRunner
+      .withArguments("recordPaparazziDebug", "--stacktrace")
+      .runFixture(fixtureRoot) { build() }
+
+    // test task does not run again
     with(secondRunResult.task(":testDebugUnitTest")) {
       assertThat(this).isNotNull()
       assertThat(this!!.outcome).isEqualTo(SUCCESS) // not UP-TO-DATE
     }
+
     assertThat(snapshot.exists()).isTrue()
   }
 
@@ -605,22 +614,11 @@ class PaparazziPluginTest {
 
     // Take 2
     val secondRunResult = gradleRunner
-      .withArguments("recordPaparazziDebug", "--stacktrace")
-      .forwardOutput()
-      .runFixture(fixtureRoot) { build() }
-
-    with(secondRunResult.task(":testDebugUnitTest")) {
-      assertThat(this).isNotNull()
-      assertThat(this!!.outcome).isEqualTo(SUCCESS) // not UP-TO-DATE
-    }
-
-    // Take 3
-    val thirdRunResult = gradleRunner
       .withArguments("verifyPaparazziDebug", "--stacktrace")
       .forwardOutput()
       .runFixture(fixtureRoot) { build() }
 
-    with(thirdRunResult.task(":testDebugUnitTest")) {
+    with(secondRunResult.task(":testDebugUnitTest")) {
       assertThat(this).isNotNull()
       assertThat(this!!.outcome).isEqualTo(SUCCESS) // not UP-TO-DATE
     }
