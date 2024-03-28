@@ -25,3 +25,8 @@ public abstract class app/cash/paparazzi/gradle/PrepareResourcesTask : org/gradl
 	public final fun writeResourcesFile ()V
 }
 
+public abstract class app/cash/paparazzi/gradle/RecordPaparazziTask : app/cash/paparazzi/gradle/PaparazziPlugin$PaparazziTask {
+	public fun <init> ()V
+	public final fun copy ()V
+}
+
