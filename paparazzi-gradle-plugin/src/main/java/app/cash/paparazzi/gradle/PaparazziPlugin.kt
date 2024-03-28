@@ -148,9 +148,11 @@ public class PaparazziPlugin @Inject constructor(
       project.tasks.named { it == "test$testVariantSlug" }
         .configureEach { it.dependsOn(writeResourcesTask) }
 
-      val recordTaskProvider = project.tasks.register("recordPaparazzi$variantSlug", PaparazziTask::class.java) {
+      val recordTaskProvider = project.tasks.register("recordPaparazzi$variantSlug", RecordPaparazziTask::class.java) {
         it.group = VERIFICATION_GROUP
         it.description = "Record golden images for variant '${variant.name}'"
+        it.reportsDirectory.set(reportOutputDir)
+        it.goldenSnapshotTargetDirectory.set(snapshotOutputDir)
         it.mustRunAfter(deleteSnapshots)
       }
       recordVariants.configure { it.dependsOn(recordTaskProvider) }
@@ -166,11 +168,9 @@ public class PaparazziPlugin @Inject constructor(
       }
       verifyVariants.configure { it.dependsOn(verifyTaskProvider) }
 
-      val isRecordRun = project.objects.property(Boolean::class.java)
       val isVerifyRun = project.objects.property(Boolean::class.java)
 
       project.gradle.taskGraph.whenReady { graph ->
-        isRecordRun.set(recordTaskProvider.map { graph.hasTask(it) })
         isVerifyRun.set(verifyTaskProvider.map { graph.hasTask(it) })
       }
 
@@ -186,7 +186,6 @@ public class PaparazziPlugin @Inject constructor(
         test.systemProperties["paparazzi.artifacts.cache.dir"] = gradleUserHomeDir.path
         test.systemProperties.putAll(project.properties.filterKeys { it.startsWith("app.cash.paparazzi") })
 
-        test.inputs.property("paparazzi.test.record", isRecordRun)
         test.inputs.property("paparazzi.test.verify", isVerifyRun)
 
         test.inputs.files(sources.localResourceDirs)
@@ -204,9 +203,10 @@ public class PaparazziPlugin @Inject constructor(
         test.inputs.files(layoutlibNativeRuntimeFileCollection)
           .withPropertyName("paparazzi.nativeRuntime")
           .withPathSensitivity(PathSensitivity.NONE)
+        test.inputs.files(project.files(snapshotOutputDir))
+          .withPathSensitivity(PathSensitivity.NAME_ONLY)
 
         test.outputs.dir(reportOutputDir)
-        test.outputs.dir(snapshotOutputDir)
 
         test.doFirst {
           // Note: these are lazy properties that are not resolvable in the Gradle configuration phase.
@@ -215,13 +215,7 @@ public class PaparazziPlugin @Inject constructor(
             layoutlibNativeRuntimeFileCollection.singleFile.absolutePath
           test.systemProperties["paparazzi.layoutlib.resources.root"] =
             layoutlibResourcesFileCollection.singleFile.absolutePath
-          test.systemProperties["paparazzi.test.record"] = isRecordRun.get()
           test.systemProperties["paparazzi.test.verify"] = isVerifyRun.get()
-        }
-
-        test.doLast {
-          val uri = reportOutputDir.get().asFile.toPath().resolve("index.html").toUri()
-          test.logger.log(LIFECYCLE, "See the Paparazzi report at: $uri")
         }
       }
 
