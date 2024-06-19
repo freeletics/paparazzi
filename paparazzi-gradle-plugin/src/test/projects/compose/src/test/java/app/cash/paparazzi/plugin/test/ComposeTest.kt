@@ -14,4 +14,11 @@ class ComposeTest {
       HelloPaparazzi()
     }
   }
+
+  @Test
+  fun platformDiff() {
+    paparazzi.snapshot {
+      PlatformDiff()
+    }
+  }
 }

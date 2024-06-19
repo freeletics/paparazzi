@@ -1501,11 +1501,14 @@ class PaparazziPluginTest {
 
     val snapshotsDir = File(fixtureRoot, "build/reports/paparazzi/debug/images")
     val snapshots = snapshotsDir.listFiles()
-    assertThat(snapshots!!).hasLength(1)
+    assertThat(snapshots!!).hasLength(2)
 
-    val snapshotImage = snapshots[0]
-    val goldenImage = File(fixtureRoot, "src/test/resources/compose_fonts.png")
-    assertThat(snapshotImage).isSimilarTo(goldenImage).withDefaultThreshold()
+    val snapshotImage1 = snapshots[1]
+    val goldenImage1 = File(fixtureRoot, "src/test/resources/compose_fonts.png")
+    assertThat(snapshotImage1).isSimilarTo(goldenImage1).withDefaultThreshold()
+    val snapshotImage2 = snapshots[0]
+    val goldenImage2 = File(fixtureRoot, "src/test/resources/platform_diff.png")
+    assertThat(snapshotImage2).isSimilarTo(goldenImage2).withDefaultThreshold()
   }
 
   @Test
